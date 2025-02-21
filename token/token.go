@@ -14,6 +14,7 @@ const (
 	// identifiers and literals
 	IDENT = "IDENT"
 	INT   = "INT"
+	FLOAT = "FLOAT"
 
 	// operators
 	ASSIGN  = "="
@@ -23,11 +24,13 @@ const (
 	ASTERIX = "*"
 	SLASH   = "/"
 
+	// comparison
 	EQ     = "=="
 	NOT_EQ = "!="
-
-	LT = "<"
-	GT = ">"
+	LT     = "<"
+	GT     = ">"
+	LTE    = "<="
+	GTE    = ">="
 
 	// delimiters
 	COMMA     = ","
@@ -59,8 +62,8 @@ var keywords = map[string]TokenType{
 }
 
 func LookupIdent(ident string) TokenType {
-	if tok, ok := keywords[ident]; ok {
-		return tok
+	if token, exists := keywords[ident]; exists {
+		return token
 	}
 	return IDENT
 }
