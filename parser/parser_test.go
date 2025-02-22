@@ -203,8 +203,44 @@ func TestFloatLiteralExpression(t *testing.T) {
 			len(program.Statements), program.Statements)
 	}
 
-	for idx, stmt := range program.Statements {
-		t.Logf("%d, %v\n", idx, stmt)
+	tests := []struct {
+		expectedIdentifier float64
+	}{
+		{5.34},
+		{6.09},
+		{0.32},
 	}
 
+	for i, tt := range tests {
+		stmt := program.Statements[i]
+		if !testFloat(t, stmt, tt.expectedIdentifier) {
+			return
+		}
+	}
+}
+
+func testFloat(t *testing.T, s ast.Statement, value float64) bool {
+	stmt, ok := s.(*ast.ExpressionStatement)
+	if !ok {
+		t.Errorf("s not *ast.ExpressionStatement. got=%T", s)
+		return false
+	}
+
+	if !ok {
+		t.Errorf("s is not ast.ExpressionStatement. got=%T", s)
+		return false
+	}
+
+	floatVal, ok := stmt.Expression.(*ast.FloatLiteral)
+	if !ok {
+		t.Errorf("stmt not *ast.FloatLiteral. got=%T", stmt.Expression)
+		return false
+	}
+
+	if floatVal.Value != value {
+		t.Errorf("floatVal.Value not %f. got=%f", floatVal.Value, value)
+		return false
+	}
+
+	return true
 }
