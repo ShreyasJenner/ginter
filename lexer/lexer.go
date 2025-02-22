@@ -70,7 +70,7 @@ func isDigit(ch byte) bool {
 	return '0' <= ch && ch <= '9'
 }
 
-// function to read multi-digit numbers
+// function to read multi-digit numbers and floating point numbers
 func (l *Lexer) readNumber() (string, token.TokenType) {
 	curPosition := l.curPosition
 	for isDigit(l.ch) {
