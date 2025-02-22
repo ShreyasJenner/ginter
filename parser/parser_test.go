@@ -181,3 +181,30 @@ func TestIntegerLiteralExpression(t *testing.T) {
 	}
 
 }
+
+func TestFloatLiteralExpression(t *testing.T) {
+	input := `
+  5.34;
+  6.09;
+  0.32;
+  `
+
+	l := lexer.New(input)
+	p := New(l)
+
+	program := p.ParseProgram()
+	checkParserErrors(t, p)
+
+	if program == nil {
+		t.Fatalf("ParseProgram() returned nil")
+	}
+	if len(program.Statements) != 3 {
+		t.Fatalf("program.Statements does not contain 3 statments. got=%d %v",
+			len(program.Statements), program.Statements)
+	}
+
+	for idx, stmt := range program.Statements {
+		t.Logf("%d, %v\n", idx, stmt)
+	}
+
+}
