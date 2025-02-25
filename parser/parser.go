@@ -70,8 +70,8 @@ func New(l *lexer.Lexer) *Parser {
 
 	p.prefixParseFns = make(map[token.TokenType]prefixParseFn)
 	p.registerPrefix(token.IDENT, p.parseIdentifier)
-	p.registerPrefix(token.INT, p.parseIntegerLiteral)
-	p.registerPrefix(token.FLOAT, p.parseFloatLiteral)
+	p.registerPrefix(token.INT, p.parseLiteral)
+	p.registerPrefix(token.FLOAT, p.parseLiteral)
 	p.registerPrefix(token.BANG, p.parsePrefixExpression)
 	p.registerPrefix(token.MINUS, p.parsePrefixExpression)
 
@@ -236,6 +236,17 @@ func (p *Parser) curPrecedence() int {
 	}
 
 	return LOWEST
+}
+
+// parse integer and float literals
+func (p *Parser) parseLiteral() ast.Expression {
+	if p.curToken.Type == "INT" {
+		return p.parseIntegerLiteral()
+	} else if p.curToken.Type == "FLOAT" {
+		return p.parseFloatLiteral()
+	} else {
+		return nil
+	}
 }
 
 // parse the integer literal
